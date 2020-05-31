@@ -8,40 +8,52 @@ public class DnsTest extends BaseTest{
 
     @Test
     public void dnsTest() throws InterruptedException {
-        new SearchBar().searchAndEnter("Playstation");
+
+        // Товары
+        String productOne = "Игровая приставка PlayStation 4 Slim Black 1 TB + 3 игры";
+        String productTwo = "Игра Detroit: Стать человеком (PS4)";
+
+
+        new SearchBar().searchAndEnter("playstation"); // поиск playstation
         ResultPage resultsPage = new ResultPage();
-        resultsPage.chooseByPartialNameFast("Игровая приставка PlayStation 4 Slim Black");
+        resultsPage.chooseByPartialNameFast(productOne); // кликнуть по playstation 4 slim black
+
         ProductPage productPage = new ProductPage();
-        productPage.setPrice(productPage.savePrice());
-        productPage.selectChoice(2);
-        productPage.setPrice(productPage.savePrice());
+        productPage.setPrice(productPage.savePrice());  // запомнить цену
+
+        productPage.addToBasket();                     // добавить в корзину
+
+
+        new SearchBar().searchAndEnter(productTwo);  // поиск Detroit
+        productPage.setPrice(productPage.savePrice()); // запомнить цену
+        productPage.addToBasket();                      // добавить в корзину
+
         VirtualBasket virtualBasket = new VirtualBasket();
-        productPage.addToBasket();
-
-        new SearchBar().searchAndEnter("Detroit");
-        productPage.setPrice(productPage.savePrice());
-        productPage.addToBasket();
-
-        virtualBasket.allBasket();
-
         BasePage basePage = new BasePage();
 
-
-//        Assert.assertEquals("Сумма в корзине и ожидаемая сумма не совпадают!",
-//                basePage.priceBasketOnMainPage(),
-//                basketPage.allPriceBasket());
-
-        basePage.clickOnBasket();
+        basePage.clickOnBasket();                   // перейти в корзину
 
         BasketPage basketPage = new BasketPage();
-        basketPage.checkItemPrice("Detroit");
 
-//        virtualBasket.allProductCheckPriceTest();
-        virtualBasket.removeItemFromBasket("Игра Detroit: Стать человеком (PS4)");
-        virtualBasket.allBasket();
+        virtualBasket.allProductCheckPriceTest();  // проверить цену каждого из товаров и сумму
 
-        System.out.println(basePage.priceBasketOnMainPage());
-        System.out.println(virtualBasket.allPriceBasket());
+        basketPage.clickOnGuarantee24(VirtualBasket.findObject(productOne)); // В корзине для playstation Доп.гарантия - выбрать 24 месяца + запомнить цену с гарантией
+
+        basketPage.removeBasket(productTwo);                // удалить из корзины Detroit
+
+        basketPage.checkProductOnRealBasket(productTwo); // проверить что Detroit нет больше в корзине
+        basketPage.equalsBasketAndVirtualBasket();      //  проверить что сумма уменьшилась на цену Detroit
+
+        basketPage.AddProductPlus(productOne, 2);   //  добавить еще 2 playstation (кнопкой +)
+
+        basketPage.equalsBasketAndVirtualBasket();   // проверить что сумма верна (равна 3*(цена playstation+гарантия))
+
+        basketPage.removeBasket(productOne);        //  удалить (кнопка "удалить") Playstation из корзины
+
+        basketPage.recoveryProduct();    // нажать вернуть удаленный товаров
+
+        basketPage.equalsBasketAndVirtualBasket();     // проверить что 3 playstation снова в корзине и выбрана гарантия 24 месяца
+
 
 
 

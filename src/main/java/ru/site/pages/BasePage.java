@@ -1,5 +1,6 @@
 package ru.site.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,6 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.site.Init;
 
+import java.util.function.Function;
+
 
 public class BasePage {
     WebDriver driver;
@@ -15,7 +18,7 @@ public class BasePage {
 
     public BasePage() {
         driver = Init.getDriver();
-        wait = new WebDriverWait(driver, 10);
+        wait = new WebDriverWait(driver, 4);
         PageFactory.initElements(driver, this);
     }
 
@@ -45,9 +48,13 @@ public class BasePage {
         return Integer.parseInt(price);
     }
 
+
+
+
     public void clickOnBasket(){
-        waitElementClickable(mainBasket);
-        mainBasket.click();
+        String basket = "//span[@class='cart-link__lbl']";
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(basket)));
+        driver.findElement(By.xpath(basket)).click();
     }
 
 }

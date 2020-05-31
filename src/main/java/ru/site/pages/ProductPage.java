@@ -51,18 +51,19 @@ public class ProductPage extends BasePage {
     WebElement textField;
 
 
-    public void selectChoice(int year){
-        setGuaranteeYear(year);
-        if (getGuaranteeYear() == 2 || getGuaranteeYear() == 1) {
-            waitElementClickable(guaranteeField);
-            Select selectGuaranteeField = new Select(guaranteeField);
-            selectGuaranteeField.selectByIndex(getGuaranteeYear());
-            waitElementVisible(changePrice);
-        }
-        setPriceBefore(getPrice());
-    }
+//    public void selectChoice(int year){
+//        setGuaranteeYear(year);
+//        if (getGuaranteeYear() == 2 || getGuaranteeYear() == 1) {
+//            waitElementClickable(guaranteeField);
+//            Select selectGuaranteeField = new Select(guaranteeField);
+//            selectGuaranteeField.selectByIndex(getGuaranteeYear());
+//            waitElementVisible(changePrice);
+//        }
+//        setPriceBefore(getPrice());
+//    }
 
     public int savePrice(){
+        waitElementClickable(productPriceField);
         String newPrice = productPriceField.getText().replace(" ", "");
         return Integer.parseInt(newPrice);
     }
@@ -71,10 +72,8 @@ public class ProductPage extends BasePage {
         waitElementClickable(buttonBuy);
         String productNameText = waitElementVisible(textField).getText();
 
-        VirtualBasket.basket.add(new Product(getPrice(), getPriceBefore(), productNameText, getGuaranteeYear()));
+        VirtualBasket.basket.add(new Product(getPrice(), productNameText, getGuaranteeYear()));
         buttonBuy.click();
-        setGuaranteeYear(0);
-        setPrice(0);
-        setPriceBefore(0);
+
     }
 }

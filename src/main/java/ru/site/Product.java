@@ -4,25 +4,33 @@ public class Product {
     private int price;
     private String name;
     private int guaranteeYear;
-    private int priceWithOutGuarantee;
+    private int priceWithGuarantee;
+    private int count;
 
+    public int getCount() {
+        return count;
+    }
 
+    public void setCount(int count) {
+        this.count = count;
+    }
 
+    public int getPriceWithGuarantee() {
+        return priceWithGuarantee;
+    }
 
-    public Product(int price, int priceWithOutGuarantee, String name, int guaranteeYear) {
+    public void setPriceWithGuarantee(int priceWithGuarantee) {
+        this.priceWithGuarantee = priceWithGuarantee;
+    }
+
+    public Product(int price, String name, int guaranteeYear) {
         this.price = price;
         this.name = name;
         this.guaranteeYear = guaranteeYear;
-        this.priceWithOutGuarantee = priceWithOutGuarantee;
+        count = 1;
+
     }
 
-    public int getPriceWithOutGuarantee() {
-        return priceWithOutGuarantee;
-    }
-
-    public void setPriceWithOutGuarantee(int priceWithOutGuarantee) {
-        this.priceWithOutGuarantee = priceWithOutGuarantee;
-    }
 
     public int getPrice() {
         return price;

@@ -14,19 +14,12 @@ public class Init {
     private static WebDriver driver;
 
     public static void initWebdriver(){
-        Properties props = new Properties();
-
-        try {
-            props.load(new FileInputStream(new File("src/test/resources/environment.properties")));
-        }
-        catch (Exception e){
-            System.out.println(e);
-        }
+        TestProperties prop = new TestProperties();
 
 
-        String browser = props.getProperty("browser", "chrome");
-        String way = props.getProperty("way", "webdrivers/chromedriver");
-        String url = props.getProperty("url", "https://www.youtube.com/");
+        String browser = prop.getProperties().getProperty("browser", "chrome");
+        String way = prop.getProperties().getProperty("way", "webdrivers/chromedriver");
+        String url = prop.getProperties().getProperty("url", "https://www.youtube.com/");
 
         switch (browser) {
             case "chrome":

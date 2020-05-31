@@ -10,8 +10,8 @@ import java.util.List;
 public class ResultPage extends BasePage {
 
 
-    public ResultPage() throws InterruptedException {
-        Thread.sleep(2000);
+    public ResultPage()  {
+
         waitElementClickable(titlesElements.get(0));
     }
 
