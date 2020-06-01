@@ -1,6 +1,5 @@
 package ru.site;
 
-import org.junit.Assert;
 import org.junit.Test;
 import ru.site.pages.*;
 
@@ -44,7 +43,7 @@ public class DnsTest extends BaseTest{
         basketPage.checkProductOnRealBasket(productTwo); // проверить что Detroit нет больше в корзине
         basketPage.equalsBasketAndVirtualBasket();      //  проверить что сумма уменьшилась на цену Detroit
 
-        basketPage.AddProductPlus(productOne, 2);   //  добавить еще 2 playstation (кнопкой +)
+        basketPage.addProductPlus(productOne, 2);   //  добавить еще 2 playstation (кнопкой +)
 
         basketPage.equalsBasketAndVirtualBasket();   // проверить что сумма верна (равна 3*(цена playstation+гарантия))
 

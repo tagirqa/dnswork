@@ -72,7 +72,7 @@ public class BasketPage extends BasePage {
         Assert.assertEquals("Сумма в корзине не равна ожидаемой сумме!", virtualBasket.allPriceBasket(), priceBasketOnMainPage());
     }
 
-    public void AddProductPlus(String name, int i) throws InterruptedException {
+    public void addProductPlus(String name, int i) throws InterruptedException {
 
         By locator = By.xpath(String.format("//a[contains(text(),'%s')]/../../following-sibling::div//i[@class='count-buttons__icon-plus']", name));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
