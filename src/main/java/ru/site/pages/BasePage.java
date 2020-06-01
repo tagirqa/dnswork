@@ -16,15 +16,19 @@ public class BasePage {
     WebDriver driver;
     WebDriverWait wait;
 
+
+
     public BasePage() {
         driver = Init.getDriver();
-        wait = new WebDriverWait(driver, 4);
+        wait = new WebDriverWait(driver, 10);
         PageFactory.initElements(driver, this);
     }
 
     public WebElement waitElementClickable(WebElement element){
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
+
+
 
     public WebElement waitElementVisible(WebElement element){
         return wait.until(ExpectedConditions.visibilityOf(element));
@@ -48,7 +52,17 @@ public class BasePage {
         return Integer.parseInt(price);
     }
 
+    public void waitElementRefreshing(long oldBasketPrice) {
+        WebDriverWait webDriverWait = new WebDriverWait(driver, 10);
+        webDriverWait.until(webDriver -> {
+            long totalPrice = getTotalBasketPrice();
+            return totalPrice != oldBasketPrice;
+        });
+    }
 
+    public long getTotalBasketPrice() {
+        return Long.parseLong(waitElementClickable(mainBasket).getText().replaceAll(" ", ""));
+    }
 
 
     public void clickOnBasket(){

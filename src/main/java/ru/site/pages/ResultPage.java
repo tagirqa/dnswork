@@ -20,7 +20,7 @@ public class ResultPage extends BasePage {
 //    WebElement lowLoad;
     final String resultBaseXpath = "(//div[@class='catalog-items-list view-simple'])[1]";
 
-    @FindBy(xpath = "//a[@data-role='clamped-link']")
+    @FindBy(xpath = "//div[@class='n-catalog-product__main']")
     List<WebElement> titlesElements;
 
     final String itemTitleTemplate = "//a[@data-role='clamped-link' and contains(text(), '%s')]";

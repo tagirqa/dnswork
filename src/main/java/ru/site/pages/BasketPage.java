@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.site.Product;
 import ru.site.VirtualBasket;
 
@@ -33,7 +34,7 @@ public class BasketPage extends BasePage {
     WebElement productGuaranteeBar;
 
 
-    public void clickOnGuarantee24(Product product) {
+    public BasketPage clickOnGuarantee24(Product product) {
         By locator = By.xpath(String.format(productCartItemsTemplate, product.getName()));
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         WebElement productCart = driver.findElement(locator);
@@ -43,6 +44,7 @@ public class BasketPage extends BasePage {
         String sum = sumAfterClickGuarantee.getText().replaceAll("[^0-9]", "");
         product.setPriceWithGuarantee(Integer.parseInt(sum) + product.getPrice());
         product.setGuaranteeYear(2);
+        return this;
     }
 
     public int checkItemPrice(String name) {
@@ -53,7 +55,7 @@ public class BasketPage extends BasePage {
         return Integer.parseInt(price);
     }
 
-    public void removeBasket(String name) {
+    public BasketPage removeBasket(String name) {
         VirtualBasket.getDeleteProduct().add(VirtualBasket.findObject(name));
         VirtualBasket.removeItemFromBasket(VirtualBasket.findObject(name));
 
@@ -62,31 +64,37 @@ public class BasketPage extends BasePage {
         WebElement deleteButton = driver.findElement(locator);
         wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
         deleteButton.click();
+        return this;
     }
 
-    public void equalsBasketAndVirtualBasket() {
+    public BasketPage equalsBasketAndVirtualBasket() {
         VirtualBasket virtualBasket = new VirtualBasket();
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='cart-link__price']")));
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='menu-control-button'][contains(text(),'Удалить')]")));
 
         Assert.assertEquals("Сумма в корзине не равна ожидаемой сумме!", virtualBasket.allPriceBasket(), priceBasketOnMainPage());
+        return this;
     }
 
-    public void addProductPlus(String name, int i) throws InterruptedException {
+    public BasketPage addProductPlus(String name, int i) throws InterruptedException {
 
         By locator = By.xpath(String.format("//a[contains(text(),'%s')]/../../following-sibling::div//i[@class='count-buttons__icon-plus']", name));
         wait.until(ExpectedConditions.elementToBeClickable(locator));
         WebElement button = driver.findElement(locator);
+
+        BasketPage basketPage = new BasketPage();
+
+
         while (i != 0) {
-            wait.until(ExpectedConditions.elementToBeClickable(button));
             button.click();
+            waitElementRefreshing(basketPage.getTotalBasketPrice());
             i -= 1;
             VirtualBasket.findObject(name).setCount(VirtualBasket.findObject(name).getCount() + 1);
-            Thread.sleep(2000);
         }
+        return this;
     }
 
-    public void recoveryProduct() {
+    public BasketPage recoveryProduct() {
         String xpath = "//a[@class='empty-message-restore-btn ui-link_pseudolink']";
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         WebElement recovery = driver.findElement(By.xpath(xpath));
@@ -95,9 +103,10 @@ public class BasketPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathRecovery)));
         WebElement productRecovery = driver.findElement(By.xpath(xpathRecovery));
         VirtualBasket.basket.add(VirtualBasket.findObjectDelete(productRecovery.getText()));
+        return this;
     }
 
-    public void checkProductOnRealBasket(String name) {
+    public BasketPage checkProductOnRealBasket(String name) {
         String nameProduct = "//a[contains(text(),'%s')][1]";
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(nameProduct)));
@@ -106,6 +115,7 @@ public class BasketPage extends BasePage {
         catch (Exception e) {
             System.out.println("Элемента: " + name + " больше нет в корзине!");
         }
+        return this;
     }
 
 }
